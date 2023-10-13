@@ -1,0 +1,16 @@
+.cartSpan,
+.wishListSpan {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    bottom: -5px;
+    right: -2px;
+    font-size: 12px;
+    padding: 10px;
+}
