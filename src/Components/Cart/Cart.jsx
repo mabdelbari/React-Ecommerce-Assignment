@@ -56,7 +56,7 @@ export default function Cart() {
         },
         validationSchema,
         onSubmit: (values) => {
-            dispatch(checkoutCart({ values, cartId: data.data._id, url: "http://localhost:3000/account", userToken }))
+            dispatch(checkoutCart({ values, cartId: data.data._id, url: `http://localhost:3000/account`, userToken }))
         }
     })
 
@@ -114,7 +114,7 @@ export default function Cart() {
                                             </div>
                                         </div>
                                     </div>)}</>
-                                ) : <h6 className='text-center' style={{ height: '50vh' }} >{error}</h6>
+                                ) : <h6 className='text-center' style={{ height: '50vh' }} >Your shopping cart is empty!</h6>
                                 }
                             </div>
                             <div className="col-md-4">

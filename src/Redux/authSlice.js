@@ -1,9 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 
-
-
-
 const initialState = {
     isPending: false,
     userData: JSON.parse(localStorage.getItem('userData')),

@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './Register.module.css';
 import { useFormik } from 'formik';
 import * as Yup from 'yup'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { registerPending, registerSuccess, registerFail } from '../../Redux/userRegistrationSlice';
 import { Helmet } from 'react-helmet';
+import { toast } from 'react-toastify';
 
 
 
@@ -14,25 +13,32 @@ export default function Register() {
 
     let navigate = useNavigate();
 
-    let dispatch = useDispatch();
+    const toastSettings = {
+        autoClose: 2000,
+        theme: 'colored'
+    }
 
-    const { isPending } = useSelector((store) => store.userRegistrationReducer)
+    const [isPending, setIsPending] = useState(false)
 
     async function createAccount(values) {
-        dispatch(registerPending());
+        setIsPending(true);
         try {
             const { data } = await axios.post('https://ecommerce.routemisr.com/api/v1/auth/signup', values)
             if (data.message === "success") {
-                dispatch(registerSuccess("Account has been successfully created"));
+                setIsPending(false);
+                toast.success("Account has been successfully created", toastSettings);
                 navigate('/login');
             }
         } catch (error) {
             if (error.response) {
-                dispatch(registerFail(error.response.data.message))
+                setIsPending(false);
+                toast.error(error.response.data.message, toastSettings)
             } else if (error.request) {
-                dispatch(registerFail(error.request))
+                setIsPending(false);
+                toast.error(error.request, toastSettings)
             } else {
-                dispatch(registerFail(error.message))
+                setIsPending(false);
+                toast.error(error.message, toastSettings)
             }
 
         }

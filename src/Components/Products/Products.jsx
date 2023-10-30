@@ -15,7 +15,6 @@ import { Helmet } from 'react-helmet';
 
 export default function Products() {
 
-
     const dispatch = useDispatch();
     let urlParams = useParams();
 

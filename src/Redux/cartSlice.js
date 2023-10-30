@@ -108,6 +108,8 @@ export const checkoutCart = createAsyncThunk('cart/checkoutCart',
                 {
                     headers
                 })
+
+            console.log(data);
             return data;
         } catch (error) {
             if (error?.response) return rejectWithValue(error?.response.data.message)

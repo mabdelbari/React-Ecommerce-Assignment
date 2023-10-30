@@ -1,4 +1,4 @@
-import { RouterProvider, createHashRouter } from 'react-router-dom';
+import { RouterProvider, createBrowserRouter, createHashRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ToastContainer } from 'react-toastify';
 
@@ -26,7 +26,7 @@ import ResetPassword from './Components/ResetPassword/ResetPassword';
 
 
 
-let routes = createHashRouter([
+let routes = createBrowserRouter([
     {
         path: '/', element: <Layout />, children: [
             { index: true, element: <ProtectedRoute> <Home /> </ProtectedRoute> },

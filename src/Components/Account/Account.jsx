@@ -9,7 +9,6 @@ export default function Account() {
             <title>Account - FreshCart</title>
         </Helmet>
 
-
         <section id='cart' className='py-4 my-5'>
             <div className="container">
                 <div className="cart-title text-center my-5">
