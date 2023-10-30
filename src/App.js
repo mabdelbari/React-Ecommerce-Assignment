@@ -23,7 +23,7 @@ import ForgetPassword from './Components/ForgetPassword/ForgetPassword';
 import ResetPassword from './Components/ResetPassword/ResetPassword';
 
 
-let routes = createHashRouter([
+let routes = createBrowserRouter([
     {
         path: '/', element: <Layout />, children: [
             { index: true, element: <ProtectedRoute> <Home /> </ProtectedRoute> },

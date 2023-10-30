@@ -2,7 +2,7 @@
     "name": "ecommerce-react-app",
     "version": "0.1.0",
     "private": true,
-    "homepage": "https://mabdelbari.github.io/React-Ecommerce-Assignment",
+    "homepage": "https://mabdelbari.github.io/React-Ecommerce-Assignment/",
     "dependencies": {
         "@emotion/react": "^11.11.1",
         "@emotion/styled": "^11.11.0",
