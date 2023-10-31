@@ -56,7 +56,7 @@ export default function Cart() {
         },
         validationSchema,
         onSubmit: (values) => {
-            dispatch(checkoutCart({ values, cartId: data.data._id, url: `http://localhost:3000/account`, userToken }))
+            dispatch(checkoutCart({ values, cartId: data.data._id, url: `${window.location.hostname === "localhost" ? "http://localhost:3000/account" : `http://${window.location.hostname}`}`, userToken }))
         }
     })
 
