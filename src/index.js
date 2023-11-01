@@ -8,6 +8,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min'
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'react-toastify/dist/ReactToastify.min.css';
 import 'react-lazy-load-image-component/src/effects/blur.css';
+import 'react-loading-skeleton/dist/skeleton.css'
 import './index.css';
 import { Offline } from 'react-detect-offline';
 

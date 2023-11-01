@@ -4,25 +4,25 @@ import axios from 'axios';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import placeholder from '../../Assets/images/placeholder2.jpg'
 import { useQuery } from 'react-query';
-import { TailSpin } from 'react-loader-spinner';
 import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addProductToCart } from '../../Redux/cartSlice';
 import { addProductToWishlist, removeProductFromWishlist } from '../../Redux/wishlistSlice';
 import { Helmet } from 'react-helmet';
+import Loading from '../Loading/Loading';
 
 
 
 export default function Products() {
 
     const dispatch = useDispatch();
-    let urlParams = useParams();
+    const urlParams = useParams();
 
     const [page, setPage] = useState(1);
     const [searchKeyword, setSearchKeyword] = useState("");
 
     const { userToken } = useSelector((store) => store.authReducer)
-
+    const { isPending: cartIsLoading } = useSelector((store) => store.cartReducer)
     const { wishAdded, isPending } = useSelector((store) => store.wishlistReducer)
 
     let { isLoading, data, refetch } = useQuery({
@@ -57,18 +57,7 @@ export default function Products() {
 
             {isLoading
                 ? (
-                    <div className='w-100 vh-100 py-5 d-flex justify-content-center align-content-center '>
-                        <TailSpin
-                            height="80"
-                            width="80"
-                            color="#0aad0a"
-                            ariaLabel="tail-spin-loading"
-                            radius="1"
-                            wrapperStyle={{}}
-                            wrapperClass=""
-                            visible={true}
-                        />
-                    </div>
+                    <Loading />
                 )
                 : (
                     <div className="container">
@@ -84,10 +73,11 @@ export default function Products() {
                         <div className="row gy-4">
                             {data?.data.data.filter((product) => product.title.split(' ').slice(0, 4).join(' ').toLowerCase().includes(searchKeyword.toLowerCase()))
                                 .map((product) => <div key={product.id} className='col-md-2 d-flex'>
-                                    <div className='bg-main-light product d-flex flex-column p-2 rounded position-relative'>
+                                    <div className='bg-main-light product d-flex flex-grow-1 flex-column p-2 rounded position-relative'>
                                         <LazyLoadImage
                                             src={product.imageCover ? product.imageCover : placeholder}
-                                            className='w-100'
+                                            className='w-100 mb-3'
+                                            style={{ minHeight: 100 }}
                                             effect='blur'
                                             placeholderSrc={placeholder}
                                             alt={product.title}
@@ -103,8 +93,6 @@ export default function Products() {
                                             <Link to={`/productdetails/${product.id}`} className='btn btn-sm bg-main-outline fw-medium flex-grow-1 fw-bold '>More Details</Link>
                                             <button className='btn btn-sm bg-main text-white flex-grow-1' onClick={() => dispatch(addProductToCart({ id: product.id, userToken }))} ><i className='fa-solid fa-shopping-cart'></i></button>
                                         </div>
-
-
 
                                         {wishAdded?.includes(product.id)
                                             ? (
@@ -126,16 +114,6 @@ export default function Products() {
                 )
             }
 
-            {isPending && !isLoading
-                ? (
-                    <div id="loading-screen">
-                        <i className="fa-solid fa-spinner fa-spin fa-4x"></i>
-                    </div>
-                )
-                : ""
-            }
-
-
             {data?.data.data.length !== 0
                 ? <nav aria-label="Page navigation example">
                     <ul className="pagination justify-content-center mt-3">
@@ -146,6 +124,8 @@ export default function Products() {
                                 <span aria-hidden="true">&laquo;</span>
                             </button>
                         </li>
+
+
                         {
                             ((numOfPages) => {
                                 let li = [];
@@ -166,6 +146,8 @@ export default function Products() {
 
                             })(data?.data.metadata.numberOfPages)
                         }
+
+
                         <li className={`${data?.data.metadata.currentPage === data?.data.metadata.numberOfPages ? "disabled" : ""} page-item`}>
                             <button
                                 onClick={() => { setPage((current) => current + 1) }}
@@ -175,9 +157,10 @@ export default function Products() {
                         </li>
                     </ul>
                 </nav>
-                : <h4 className='text-center mt-5'>No Products In this Category</h4>}
+                : <h4 className='text-center mt-5'>No Products In this Category</h4>
+            }
 
-
+            {isPending || cartIsLoading ? (<Loading />) : ""}
         </section >
 
     </>

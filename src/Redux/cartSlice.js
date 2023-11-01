@@ -9,6 +9,95 @@ const initialState = {
     error: null
 }
 
+const cartSlice = createSlice({
+    name: 'cart',
+    initialState,
+    reducers: {
+        setNumOfItems: (state, { payload }) => {
+            state.numOfItems = payload;
+        }
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(addProductToCart.pending, (state) => {
+                state.isPending = true;
+
+            })
+            .addCase(addProductToCart.fulfilled, (state, { payload }) => {
+                state.isPending = false;
+                state.data = payload;
+                if (payload.status === 'success') {
+                    localStorage.setItem('numOfItems', payload.numOfCartItems);
+                    state.numOfItems = payload.numOfCartItems;
+                    toast.success(payload.message, {
+                        autoClose: 2000,
+                        position: 'top-center',
+                        style: {
+                            textAlign: 'center'
+                        }
+                    });
+                }
+
+            })
+            .addCase(addProductToCart.rejected, (state, { payload }) => {
+                state.isPending = false;
+                state.error = payload
+            })
+            .addCase(getLoggedUserCart.pending, (state) => {
+                state.isPending = true;
+            })
+            .addCase(getLoggedUserCart.fulfilled, (state, { payload }) => {
+                state.isPending = false;
+                state.data = payload;
+                state.error = null;
+                localStorage.setItem('numOfItems', payload?.numOfCartItems);
+                state.numOfItems = payload?.numOfCartItems;
+            })
+            .addCase(getLoggedUserCart.rejected, (state, { payload }) => {
+                state.isPending = false;
+                state.numOfItems = 0;
+                state.data = null;
+                state.error = payload;
+            })
+            .addCase(deleteSpecificProduct.pending, (state) => {
+                state.isPending = true;
+            })
+            .addCase(deleteSpecificProduct.fulfilled, (state, { payload }) => {
+                state.isPending = false;
+                state.data = payload;
+                localStorage.setItem('numOfItems', payload.numOfCartItems);
+                state.numOfItems = payload.numOfCartItems;
+            })
+            .addCase(deleteSpecificProduct.rejected, (state, { payload }) => {
+                state.isPending = false;
+                state.error = payload;
+            })
+            .addCase(updateProductQuantity.pending, (state) => {
+                state.isPending = true;
+            })
+            .addCase(updateProductQuantity.fulfilled, (state, { payload }) => {
+                state.isPending = false;
+                state.data = payload;
+            })
+            .addCase(updateProductQuantity.rejected, (state, { payload }) => {
+                state.isPending = false;
+                state.error = payload;
+            })
+            .addCase(checkoutCart.pending, (state) => {
+                state.isPending = true;
+            })
+            .addCase(checkoutCart.fulfilled, (state, { payload }) => {
+                state.isPending = false;
+                window.location.href = payload.session.url;
+            })
+            .addCase(checkoutCart.rejected, (state, { payload }) => {
+                state.isPending = false;
+                state.error = payload;
+            })
+
+    }
+})
+
 export const addProductToCart = createAsyncThunk('cart/addProductToCart',
     async ({ id, userToken }, { rejectWithValue }) => {
         const headers = {
@@ -118,96 +207,6 @@ export const checkoutCart = createAsyncThunk('cart/checkoutCart',
         }
     }
 )
-
-const cartSlice = createSlice({
-    name: 'cart',
-    initialState,
-    reducers: {
-        setNumOfItems: (state, { payload }) => {
-            state.numOfItems = payload;
-        }
-    },
-    extraReducers: (builder) => {
-        builder
-            .addCase(addProductToCart.pending, (state) => {
-                state.isPending = true;
-
-            })
-            .addCase(addProductToCart.fulfilled, (state, { payload }) => {
-                state.isPending = false;
-                state.data = payload;
-                if (payload.status === 'success') {
-                    localStorage.setItem('numOfItems', payload.numOfCartItems);
-                    state.numOfItems = payload.numOfCartItems;
-                    toast.success(payload.message, {
-                        autoClose: 2000,
-                        position: 'top-center',
-                        style: {
-                            textAlign: 'center'
-                        }
-                    });
-                }
-
-            })
-            .addCase(addProductToCart.rejected, (state, { payload }) => {
-                state.isPending = false;
-                state.error = payload
-            })
-            .addCase(getLoggedUserCart.pending, (state) => {
-                state.isPending = true;
-            })
-            .addCase(getLoggedUserCart.fulfilled, (state, { payload }) => {
-                state.isPending = false;
-                state.data = payload;
-                state.error = null;
-                localStorage.setItem('numOfItems', payload?.numOfCartItems);
-                state.numOfItems = payload?.numOfCartItems;
-            })
-            .addCase(getLoggedUserCart.rejected, (state, { payload }) => {
-                state.isPending = false;
-                state.numOfItems = 0;
-                state.data = null;
-                state.error = payload;
-            })
-            .addCase(deleteSpecificProduct.pending, (state) => {
-                state.isPending = true;
-            })
-            .addCase(deleteSpecificProduct.fulfilled, (state, { payload }) => {
-                state.isPending = false;
-                state.data = payload;
-                localStorage.setItem('numOfItems', payload.numOfCartItems);
-                state.numOfItems = payload.numOfCartItems;
-            })
-            .addCase(deleteSpecificProduct.rejected, (state, { payload }) => {
-                state.isPending = false;
-                state.error = payload;
-            })
-            .addCase(updateProductQuantity.pending, (state) => {
-                state.isPending = true;
-            })
-            .addCase(updateProductQuantity.fulfilled, (state, { payload }) => {
-                state.isPending = false;
-                state.data = payload;
-            })
-            .addCase(updateProductQuantity.rejected, (state, { payload }) => {
-                state.isPending = false;
-                state.error = payload;
-            })
-            .addCase(checkoutCart.pending, (state) => {
-                state.isPending = true;
-            })
-            .addCase(checkoutCart.fulfilled, (state, { payload }) => {
-                state.isPending = false;
-                window.location.href = payload.session.url;
-            })
-            .addCase(checkoutCart.rejected, (state, { payload }) => {
-                state.isPending = false;
-                state.error = payload;
-            })
-
-    }
-})
-
 
 export const cartReducer = cartSlice.reducer;
 export const { setNumOfItems, setCartItems } = cartSlice.actions;

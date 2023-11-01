@@ -1,4 +1,4 @@
-import { RouterProvider, createBrowserRouter} from 'react-router-dom';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ToastContainer } from 'react-toastify';
 
@@ -52,8 +52,7 @@ let routes = createBrowserRouter([
 export default function App() {
 
     let queryClient = new QueryClient();
-
-
+    
     return <>
         <QueryClientProvider client={queryClient}>
             <Provider store={store}>
