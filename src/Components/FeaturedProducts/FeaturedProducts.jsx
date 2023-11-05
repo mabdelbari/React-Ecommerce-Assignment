@@ -36,9 +36,7 @@ export default function FeaturedProducts() {
 
         <section id='featuredProducts' className='py-4 my-5'>
             {isLoading
-                ? (
-                    <Loading />
-                )
+                ? <Loading /> 
                 : (
                     <div className="container">
                         <div>
@@ -90,7 +88,7 @@ export default function FeaturedProducts() {
 
                     </div>
                 )
-            }
+            }                 
 
             {isPending || cartIsLoading ? (<Loading />) : ""}
 
